@@ -66,13 +66,16 @@ html, body{
     height: 75px;
 }
 .card-img{
-    width: 273px;
+    height: 271px;
 }
 .card p {
     padding: 0 135px;
     text-align: center;
     opacity: 1;
     transition: opacity 0.5s ease-out;
+}
+.card p.fade-out {
+    opacity: 0;
 }
 .buttons{
     display: flex;
@@ -99,6 +102,9 @@ button{
 }
 .gt-start{
     display: none;
+    border: 2px solid #a5f151;
+    background-color: white;
+    box-shadow: 0px 5px 7px rgba(11, 255, 52, 0.2);
 }
 .btn-click-anim{
     transition: transform 0.2s ease-out, box-shadow 1s ease-in-out;
@@ -109,6 +115,8 @@ button{
     background-color: #b6ff63;
 }
 
-
+.fade-out {
+    opacity: 0 !important;
+}
 
 

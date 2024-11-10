@@ -20,12 +20,16 @@ let count = 1;
 
 function updateContent() {
     // Updating images, background, and text based on the current count
-    main_ele[0].setAttribute('src', `../public/images/a${count}1.svg`);
-    main_ele[1].setAttribute('src', `../public/images/a${count}2.svg`);
+    main_ele[0].setAttribute('src', `../images/a${count}1.svg`);
+    main_ele[1].setAttribute('src', `../images/a${count}2.svg`);
     card.style.background = cardbg[count - 1];
-    card_p.textContent = phrases[count - 1];
+    card_p.classList.add('fade-out');
+    setTimeout(() => {
+        card_p.textContent = phrases[count - 1];
+        card_p.classList.remove('fade-out');
+    }, 300); // Adjust the timeout duration as needed
     main.style.background = mainbg[count - 1];
-    card_img.setAttribute('src', `../public/images/i${count}.png`);
+    card_img.setAttribute('src', `/images/i${count}.png`);
 
     // Updating button visibility
     prev_btn.style.opacity = count > 1 ? '100' : '0';
@@ -46,6 +50,10 @@ prev_btn.addEventListener('click', () => {
         count--;
         updateContent();
     }
+});
+
+gt_start.addEventListener('click', () => {
+    window.location.href = '/register';
 });
 
 // Initial content update

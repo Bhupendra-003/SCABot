@@ -12,4 +12,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res)=>{
     res.render('index');
-})
+});
+app.get('/register', (req, res)=>{
+    res.render('register');
+});
+
+app.listen(3000, ()=>{
+    log('Server is running on port 3000');
+});

@@ -4,8 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/stylesheets/register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    
+    <div class="main">
+        <div class="card">
+            <div class="left">
+                <img src="/images/meditate.jpg" alt="">
+            </div>
+            <div class="right">
+                <div class="cont">
+                    <h1>Register</h1>
+                    <p>Your mental health is our responsibility.</p>
+                    <form action="/validate" method="post">
+                        <label for="Name">Name<span> *</span></label>
+                        <input required type="text" name="Name" id="username">
+                        <label for="email">Email<span> *</span></label>
+                        <input required type="email" name="email" id="email">
+                        <label for="password">Password<span> *</span></label>
+                        <div class="pass-cont">
+                            <input required type="text" name="password" id="password"><i class="fa-regular fa-eye"></i>
+                        </div>
+                        <p id="password-strength"></p>
+                        <input id="submit" type="submit" value="Register">
+                    </form>
+                </div>
+            </div
+        </div>
+    </div>
+    <script src="/javascripts/register.js"></script>
 </body>
 </html>

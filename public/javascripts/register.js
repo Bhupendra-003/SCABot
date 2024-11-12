@@ -1,66 +1,100 @@
 document.getElementById('password').addEventListener('input', function () {
-    const password = this.value;
+    const password = this.value.trim();
     const passwordStrength = calculatePasswordStrength(password);
     const passwordStrengthElement = document.getElementById('password-strength');
 
-    // Set the color based on strength
-    if (passwordStrength === 'Weak') {
-        passwordStrengthElement.style.color = 'red';
-    } else if (passwordStrength === 'Medium') {
-        passwordStrengthElement.style.color = 'orange';
-    } else if (passwordStrength === 'Strong') {
-        passwordStrengthElement.style.color = 'green';
-    } else {
-        passwordStrengthElement.style.color = 'black'; // Default color
-    }
+    if (!passwordStrengthElement) return;
 
+    const strengthColors = {
+        'Weak': 'red',
+        'Medium': 'orange',
+        'Strong': 'green',
+        '': 'black'
+    };
+
+    passwordStrengthElement.style.color = strengthColors[passwordStrength] || 'black';
     passwordStrengthElement.textContent = passwordStrength;
 });
 
 function calculatePasswordStrength(password) {
-    const passwordLength = password.length;
-    const hasLetters = /[a-zA-Z]/.test(password);
-    const hasNumbers = /\d/.test(password);
-    const hasSpecialChars = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password);
+    if (!password || password.length === 0) return '';
 
-    // If the password is empty
-    if (passwordLength === 0) {
-        return '';
+    const criteria = {
+        length: password.length,
+        hasLetters: /[a-zA-Z]/.test(password),
+        hasNumbers: /\d/.test(password),
+        hasSpecialChars: /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password),
+        hasUpperCase: /[A-Z]/.test(password),
+        hasLowerCase: /[a-z]/.test(password)
+    };
+
+    if (criteria.length < 5) return 'Weak';
+
+    if (criteria.length >= 5 && criteria.length < 8) {
+        return (criteria.hasLetters && criteria.hasNumbers) ? 'Medium' : 'Weak';
     }
 
-    // Weak conditions
-    if (passwordLength < 5) {
-        return 'Weak';
-    }
-
-    // Medium conditions
-    if (passwordLength >= 5 && passwordLength < 8) {
-        if (hasLetters && hasNumbers) {
-            return 'Medium';
-        } else {
-            return 'Weak';
-        }
-    }
-
-    // Strong conditions
-    if (passwordLength >= 8 && hasLetters && hasNumbers && hasSpecialChars) {
+    if (criteria.length >= 8 && 
+        criteria.hasUpperCase && 
+        criteria.hasLowerCase && 
+        criteria.hasNumbers && 
+        criteria.hasSpecialChars) {
         return 'Strong';
     }
 
-    // Default fallback for weak
     return 'Weak';
 }
 
 const eye = document.querySelector('.pass-cont i');
-eye.addEventListener('click', function () {
-    const passwordInput = document.getElementById('password');
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        eye.classList.remove('fa-eye-slash');
-        eye.classList.add('fa-eye');
-    } else {
-        passwordInput.type = 'password';
-        eye.classList.remove('fa-eye');
-        eye.classList.add('fa-eye-slash');
-    }
-});
+if (eye) {
+    eye.addEventListener('click', function () {
+        const passwordInput = document.getElementById('password');
+        if (!passwordInput) return;
+
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        eye.classList.toggle('fa-eye-slash', !isPassword);
+        eye.classList.toggle('fa-eye', isPassword);
+    });
+}
+
+const form = document.querySelector('form');
+if (form) {
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const email = form.email?.value?.trim();
+        const password = form.password?.value;
+        const errorElement = document.getElementById('error-message');
+
+        try {
+            const response = await fetch('/create', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const result = await response.json();
+
+            if (response.status === 409) {
+                if (errorElement) {
+                    console.log(result.message);
+                    errorElement.textContent = result.message;
+                }
+            } else if (response.ok) {
+                // Redirect or handle successful registration
+                window.location.href = '/register';
+            } else {
+                throw new Error(result.message || 'Registration failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            if (errorElement) {
+                errorElement.textContent = 'An error occurred during registration';
+            }
+        }
+    });
+}

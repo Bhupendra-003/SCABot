@@ -133,6 +133,9 @@ input[type="password"] {
     letter-spacing: 1px;
     width: 95%;
 }
+input[type="email"] {
+    margin-bottom: 5px;
+}
 .pass-cont{
     display: flex;
     max-height: 35px;
@@ -162,4 +165,9 @@ input[type="password"] {
 #submit:active{
     background-color: #3cb6fd;
     transform: scale(0.95);
+}
+
+#error-message {
+    color: #f10000;
+    font-size: 0.8rem;
 }

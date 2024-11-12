@@ -17,14 +17,15 @@
                 <div class="cont">
                     <h1>Register</h1>
                     <p>Your mental health is our responsibility.</p>
-                    <form action="/validate" method="post">
-                        <label for="Name">Name<span> *</span></label>
-                        <input required type="text" name="Name" id="username">
+                    <form action="/create" method="post">
+                        <label for="name">Name<span> *</span></label>
+                        <input required type="text" name="name" id="username">
                         <label for="email">Email<span> *</span></label>
                         <input required type="email" name="email" id="email">
+                        <p id="error-message"></p>
                         <label for="password">Password<span> *</span></label>
                         <div class="pass-cont">
-                            <input required type="text" name="password" id="password"><i class="fa-regular fa-eye"></i>
+                            <input minlength="6" required type="text" name="password" id="password"><i class="fa-regular fa-eye"></i>
                         </div>
                         <p id="password-strength"></p>
                         <input id="submit" type="submit" value="Register">

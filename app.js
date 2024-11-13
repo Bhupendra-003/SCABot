@@ -30,6 +30,30 @@ app.post('/create',async (req, res)=>{
     });
     res.status(201).json({ message: 'User created successfully' });
 });
+app.get('/login', (req, res)=>{
+    res.render('login');
+});
+app.post('/validate', async (req, res)=>{
+    console.log(req.body);
+    let {email, password} = req.body;
+    let user = await User.findOne({email});
+    if(user){
+        if(user.password === password){
+            res.status(200).json({ message: 'Login successful' });
+        }
+        else{
+            res.status(401).json({ message: 'Invalid password' });
+        }
+    }
+    else{
+        res.status(404).json({ message: 'User not found' });
+    }
+});
+
+app.get('/chat', (req, res)=>{
+    console.log('Chat page accessed');
+    res.render('chat');
+});
 
 app.listen(3000, ()=>{
     log('Server is running on port 3000');

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/stylesheets/login.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="cont">
+            <div class="section1">
+                <div class="image-cont">
+                    <img src="/images/logo.png" alt="">
+                </div>
+                <h1>Login to Skabbot</h1>
+                <div class="google">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" alt="">
+                    <p>Continue with Google</p>
+                </div>
+            </div>
+            <div class="or-sep">
+                <div class="or-left"></div>
+                <p>or</p>
+                <div class="or-right"></div>
+            </div>
+            <div class="section2">
+                <form action="/validate" method="post">
+                    <div class="input-group">
+                        <label for="email" >Email</label>
+                        <input required type="email" name="email" placeholder="Email" required>
+                        <p id="error-message"></p>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input required minlength="6" type="password" name="password" placeholder="Password" required>
+                    </div>
+                    <button class="login" type="submit">Login</button>
+                </form>
+            </div>
+            <div class="extras">
+                <a class="forgot" href="">Forgot your password?</a>
+                <div class="new-user">
+                    <p>New to Scabbot?</p>
+                    <a href="/register">Create account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/javascripts/login.js"></script>
+</body>
+</html>

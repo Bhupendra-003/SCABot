@@ -46,7 +46,12 @@ body {
     background-color: white;
     background-color: #caf4ff;
 }
-
+.gotochat{
+    position: absolute;
+    right: 35px;
+    text-decoration: none;
+    top: 15px;
+}
 .card {
     width: 871px;
     height: 531px;

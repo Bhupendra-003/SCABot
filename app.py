@@ -5,9 +5,22 @@ from nltk.tokenize import word_tokenize
 import re
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from flask import Flask, render_template, request
+import sys, json
+
+nltk.data.path.append('/home/bhupi/nltk_data')  # Specify custom path if needed
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
+    print("NLTK data downloaded successfully.")
+    
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('stopwords')
+    print("NLTK data downloaded successfully.")
 
 # Load NLTK data
-nltk.download('punkt')
 nltk.download('stopwords')
 
 # Load the CSV file into a DataFrame
@@ -62,25 +75,8 @@ def add_to_dataset(question, answer):
     df = pd.concat([df, new_data], ignore_index=True)
     df.to_csv(dataset_path, index=False)
 
-# Create Flask app
-app = Flask(__name__)
-
-@app.route('/')
-def home():
-    # Define suggested questions
-    suggested_questions = [
-        "What is your name?",
-        "What can you do?",
-        "How are you?",
-        "Tell me a joke.",
-        "What is the weather like today?"
-    ]
-    return render_template('index.html', suggestions=suggested_questions)
-
-@app.route('/chat', methods=['POST'])
-def chat():
-    user_input = request.form['user_input']
-    
+def chat(prompt):
+    user_input = prompt
     # Check for an answer in the dataset
     answer = find_answer_in_dataset(user_input)
     
@@ -97,17 +93,9 @@ def chat():
     if not answer:
         add_to_dataset(user_input, bot_response)
     
-    # Define suggested questions
-    suggested_questions = [
-        "What is your name?",
-        "What can you do?",
-        "How are you?",
-        "Tell me a joke.",
-        "What is the weather like today?"
-    ]
-    
-    return render_template('index.html', user_input=user_input, bot_response=bot_response, suggestions=suggested_questions)
-
-# Run the Flask app
 if __name__ == '__main__':
-    app.run(debug=True)
+    data = json.loads(sys.stdin.read())  # Read input from Node.js
+    prompt = data.get('prompt')
+    response = chatbot_response(prompt)
+    print(json.dumps({'response': response})) 
+    # app.run(debug=True)

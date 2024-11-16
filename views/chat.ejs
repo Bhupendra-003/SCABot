@@ -25,13 +25,14 @@
                     <div class="msg-bot">I am Fine, Are you feeling good today? 😊.</div>
                 </div>
                 <div class="message-bar">
-                    <form action="" method="post">
-                        <input type="text" placeholder="Say Hi!">
-                        <button><i class="fa-solid fa-paper-plane"></i></button>
+                    <form action="/chat/process" method="post">
+                        <input type="text" name="prompt" placeholder="Say Hi!">
+                        <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
                     </form>
                 </div>
             </div>     
         </div>
     </div>
-</body>
+    <script src="chat.ejs"></script>
+</body> 
 </html>

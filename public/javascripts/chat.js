@@ -1,5 +1,3 @@
-const user = require("../../models/user");
-
 const userMessage = document.querySelector('.msg-user');
 const botMessage = document.querySelector('.msg-bot');
 const sendButton = document.querySelector('form button');
@@ -24,10 +22,11 @@ sendButton.addEventListener('click', async (e) => {
     .then(data => {
         addMessageToUI(data.response, 'bot');
     })
+    window.location.href = '/chat';
 })
 
 function addMessageToUI(message, sender){
-    const msgArea = document.querySelector('.messsage-area');
+    const msgArea = document.querySelector('.message-area');
     const messageDiv = document.createElement('div');
     if(sender === 'user'){
         userMessage.innerHTML += message;

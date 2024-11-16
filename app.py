@@ -20,8 +20,6 @@ except LookupError:
     nltk.download('stopwords')
     print("NLTK data downloaded successfully.")
 
-# Load NLTK data
-nltk.download('stopwords')
 
 # Load the CSV file into a DataFrame
 dataset_path = "./customdata.csv"
@@ -39,7 +37,6 @@ def preprocess_text(text):
     text = re.sub(r'[^\w\s]', '', text)
     tokens = word_tokenize(text)
     stop_words = set(stopwords.words("english"))
-    print(stop_words) #print the stop words
     filtered_tokens = [word for word in tokens if word not in stop_words]
     return ' '.join(filtered_tokens)
 
@@ -92,10 +89,12 @@ def chat(prompt):
     # Add the new question-answer pair to the dataset if no answer found
     if not answer:
         add_to_dataset(user_input, bot_response)
+        
+    return bot_response
     
 if __name__ == '__main__':
     data = json.loads(sys.stdin.read())  # Read input from Node.js
     prompt = data.get('prompt')
-    response = chatbot_response(prompt)
+    response = chat(prompt)
     print(json.dumps({'response': response})) 
     # app.run(debug=True)

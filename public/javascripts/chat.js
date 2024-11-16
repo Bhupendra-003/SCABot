@@ -1,9 +1,9 @@
-const userMessage = document.querySelector('.msg-user');
-const botMessage = document.querySelector('.msg-bot');
 const sendButton = document.querySelector('form button');
 const userInput = document.querySelector('form input');
+const messageArea = document.querySelector('.message-area');
 
 sendButton.addEventListener('click', async (e) => {
+    e.preventDefault();
     const prompt = userInput.value;
     if(!prompt){
         return;
@@ -11,31 +11,26 @@ sendButton.addEventListener('click', async (e) => {
     addMessageToUI(prompt, 'user');
     userInput.value = '';
 
-    await fetch('/chat/process', {
+    const response  = await fetch('/chat/process', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ prompt })
     })
-    .then(response => response.json())
-    .then(data => {
-        addMessageToUI(data.response, 'bot');
-    })
-    window.location.href = '/chat';
+    // .then(response => response.json())
+    // .then(data => {
+    //     addMessageToUI(data.response, 'bot');
+    // })
+    const data = await response.json();
+    addMessageToUI(data.response, 'bot');
+    // window.location.href = '/chat';
 })
 
 function addMessageToUI(message, sender){
-    const msgArea = document.querySelector('.message-area');
     const messageDiv = document.createElement('div');
-    if(sender === 'user'){
-        userMessage.innerHTML += message;
-        messageDiv.classList.add('msg-user');
-    }
-    else{
-        botMessage.innerHTML += message;
-        messageDiv.classList.add('msg-bot');
-    }
-    msgArea.appendChild(messageDiv);
-    msgArea.scrollTop = msgArea.scrollHeight;
+    messageDiv.classList.add(`msg-${sender}`);
+    messageDiv.textContent = message;
+    messageArea.appendChild(messageDiv);
+    messageArea.scrollTop = messageArea.scrollHeight;
 }

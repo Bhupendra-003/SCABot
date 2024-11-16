@@ -56,29 +56,32 @@ app.get('/chat', (req, res)=>{
     res.render('chat');
 });
 
-app.post('/chat/process', (req, res)=>{
+app.post('/chat/process', (req, res) => {
     const userInput = req.body.prompt;
     const pythonProcess = spawn('python3', ['app.py']);
 
-    // Send user input to Python
+    let dataStr = '';
+    
+    pythonProcess.stdout.on('data', (data) => {
+        dataStr += data.toString();
+    });
+
+    pythonProcess.stderr.on('data', (data) => {
+        console.error(`Python Error: ${data}`);
+    });
+
+    pythonProcess.on('close', (code) => {
+        try {
+            const response = JSON.parse(dataStr);
+            res.json(response);
+        } catch (error) {
+            console.error('Error parsing Python output:', error);
+            res.status(500).json({ error: 'Failed to process chat response' });
+        }
+    });
+
     pythonProcess.stdin.write(JSON.stringify({ prompt: userInput }));
     pythonProcess.stdin.end();
-
-    // Collect Python's output
-    let data = '';
-    pythonProcess.stdout.on('data', chunk => (data += chunk));
-    pythonProcess.stdout.on('end', () => {
-        const response = JSON.parse(data).response;
-        res.json({ response });
-    });
-
-    pythonProcess.stderr.on('data', err => {
-        console.error('Python Error:', err.toString());
-        res.status(500).json({ error: 'Error in chatbot process' });
-    });
-    pythonProcess.on('close', code => {
-        console.log(`Python process exited with code ${code}`);
-    });
 });
 
 app.listen(3000, ()=>{
